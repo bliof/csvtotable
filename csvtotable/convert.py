@@ -94,7 +94,7 @@ def render_template(table_headers, table_items, **options):
     """
     Render Jinja2 template
     """
-    caption = options.get("caption") or "Table"
+    caption = options.get("caption") or ""
     display_length = options.get("display_length") or -1
     height = options.get("height") or "70vh"
     default_length_menu = [-1, 10, 25, 50]
@@ -173,12 +173,12 @@ def render_template(table_headers, table_items, **options):
         else:
             allowed = ["copy", "csv", "json", "print"]
 
-        datatable_options["dom"] = "Bfrtip"
+        datatable_options["dom"] = 'Brtip'
         datatable_options["buttons"] = allowed
 
     datatable_options_json = json.dumps(datatable_options, separators=(",", ":"))
 
-    return template.render(title=caption or "Table",
+    return template.render(title=caption,
                            caption=caption,
                            datatable_options=datatable_options_json,
                            virtual_scroll=virtual_scroll,
