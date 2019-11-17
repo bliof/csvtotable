@@ -20,15 +20,11 @@ package_path = os.path.dirname(os.path.abspath(__file__))
 templates_dir = os.path.join(package_path, "templates")
 
 # Initialize Jinja 2 env
-env = Environment(
-    loader=FileSystemLoader(templates_dir),
-    autoescape=select_autoescape(["html", "xml", "j2"])
-)
+env = Environment(loader=FileSystemLoader(templates_dir), autoescape=select_autoescape(["html", "xml", "j2"]))
 template = env.get_template("template.j2")
 
 # Regex to match src property in script tags
-js_src_pattern = re.compile(r'<script.*?src=\"(.*?)\".*?<\/script>',
-                            re.IGNORECASE | re.MULTILINE)
+js_src_pattern = re.compile(r'<script.*?src=\"(.*?)\".*?<\/script>', re.IGNORECASE | re.MULTILINE)
 # Path to JS files inside templates
 js_files_path = os.path.join(package_path, templates_dir)
 
@@ -44,10 +40,7 @@ def convert(input_file_name, **kwargs):
 
     # Read CSV and form a header and rows list
     with open(input_file_name, "rb") as input_file:
-        reader = csv.reader(input_file,
-                            encoding="utf-8",
-                            delimiter=delimiter,
-                            quotechar=quotechar)
+        reader = csv.reader(input_file, encoding="utf-8", delimiter=delimiter, quotechar=quotechar)
 
         csv_headers = []
         if not kwargs.get("no_header"):
@@ -101,7 +94,7 @@ def render_template(table_headers, table_items, **options):
     """
     Render Jinja2 template
     """
-    caption = options.get("caption") or "Table"
+    caption = options.get("caption") or ""
     display_length = options.get("display_length") or -1
     height = options.get("height") or "70vh"
     default_length_menu = [-1, 10, 25, 50]
@@ -180,13 +173,12 @@ def render_template(table_headers, table_items, **options):
         else:
             allowed = ["copy", "csv", "json", "print"]
 
-        datatable_options["dom"] = "Bfrtip"
+        datatable_options["dom"] = 'Brtip'
         datatable_options["buttons"] = allowed
 
-    datatable_options_json = json.dumps(datatable_options,
-                                        separators=(",", ":"))
+    datatable_options_json = json.dumps(datatable_options, separators=(",", ":"))
 
-    return template.render(title=caption or "Table",
+    return template.render(title=caption,
                            caption=caption,
                            datatable_options=datatable_options_json,
                            virtual_scroll=virtual_scroll,
